@@ -2,6 +2,8 @@
  * Add our Custom Javascript
  */
 
+$(document).ready(function(){
+    
 /*
  * Disable key press in number input
  */
@@ -35,6 +37,7 @@ $('.writelog').on('click', function(evt){
     var current_taskid = $(evt.target).attr('data-taskid')
     $('#logModal #modal_update_taskid').val(current_taskid)
     $('#logModal').modal('toggle')
+});
 });
 
 /*
