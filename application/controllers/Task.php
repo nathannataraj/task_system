@@ -55,7 +55,7 @@ class Task extends CI_Controller {
                 try{
                     $this->task_model->insertData('task',$new_task);
                     $taskid = $this->db->insert_id();
-                    if($_FILES['treffile']){
+                    if(!empty($_FILES['treffile'])){
                         $this->do_upload($taskid);
                     }
                     $this->session->set_flashdata('error', 'Task added successfully');
@@ -151,7 +151,7 @@ class Task extends CI_Controller {
                 $new_task = array('ProjectId' => $this->input->post('tproject'),'TaskName' => $this->input->post('tname'), 'TaskDescription' => $this->input->post('tdescription'), 'Assigned' => $this->input->post('tassigne'), 'ApproxDuration' => $this->input->post('tapproxduration'), 'Priority' => $this->input->post('tpriority'), 'Status' => $this->input->post('tstatus'),'UpdatedTS'=>date('Y-m-d H:i:s'));
                 try{
                     $this->task_model->updateData('task',$new_task,array('TaskId' => $taskid));
-                    if($_FILES['treffile']){
+                    if(!empty($_FILES['treffile'])){
                         $this->do_upload($taskid);
                     }
                     $this->session->set_flashdata('error', 'Task updated successfully');
@@ -199,11 +199,23 @@ class Task extends CI_Controller {
          * UpdateType - deletetask : Updating task status to 'D' via ajax request
          * 
          */
-        public function update_task(){
+        public function update_task_status(){
             
             if($this->input->post('updateType') == 'status'){
                 $condition = array('taskId' => $this->input->post('taskId'));
                 $data_update = array('Status' => $this->input->post('taskStatus'));
+                if($this->input->post('taskStatus') == 'I'){
+                    $check_status = $this->task_model->selectData('task',$condition,'Status');
+                    if($check_status[0]->Status == 'H'){
+                        $data_update['HoldETS'] = date('Y-m-d H:i:s');
+                    }else{
+                        $data_update['StartTS'] = date('Y-m-d H:i:s');
+                    }
+                }elseif($this->input->post('taskStatus') == 'H'){
+                    $data_update['HoldSTS'] = date('Y-m-d H:i:s');
+                }elseif($this->input->post('taskStatus') == 'C'){
+                    $data_update['CompletedTS'] = date('Y-m-d H:i:s');
+                }
                 $log_data = array('taskId' => $this->input->post('taskId'),'LogDetail' => $this->input->post('taskLog'),'CreatedTS' => date('Y-m-d H:i:s'),'UpdatedTS' => date('Y-m-d H:i:s'));
                 try{
                     $this->task_model->updateData('task',$data_update,$condition);

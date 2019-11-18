@@ -55,6 +55,6 @@ $route['create']['POST'] = 'task/create';
 $route['edit/(:num)']['GET'] = 'task/edit_task/$1';
 $route['edit/(:num)']['POST'] = 'task/update/$1';
 $route['show/(:num)']['GET'] = 'task/view_task/$1';
-$route['update']['POST'] = 'task/update_task';
+$route['update']['POST'] = 'task/update_task_status';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

@@ -16,8 +16,14 @@ $("[type='number']").keypress(function (evt) {
 $("span.closetask").on('click',function (evt) {
     var current_status = $(evt.target).attr('data-cStatus')
     var current_taskid = $(evt.target).attr('data-taskid')
+    if(current_status == 'C'){
+        return false;
+    }
     $('#myModal #modal_update_taskid').val(current_taskid)
     $('#myModal #tstatus option[value="'+current_status+'"]').remove()
+    if(current_status == 'I' || current_status == 'H'){
+        $('#myModal #tstatus option[value="O"]').remove()
+    }
     $('#myModal').modal('toggle')
 });
 
