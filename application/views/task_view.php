@@ -79,13 +79,18 @@
           </ul>
     </div>
     
+    <?php if($tasks->Status == 'C'){ ?>
+    <h4>Task Statistics</h4>
+    <div id="example2.1" style="height: 200px;"></div>
+    <?php } ?>
     
     <div class="col-lg-12 text-center">
         <a href="/">Back to Task List</a>
     </div>
 </div>    
-
-   
+<?php if($tasks->Status == 'C'){ ?>
+    <?php $this->load->view('chart-task'); ?>   
+<?php } ?>
 <?php $this->load->view('footer'); ?>
 
 
